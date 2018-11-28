@@ -6,11 +6,9 @@ using System.Text;
 using System;
 
 
-public class FileOperationUtiles {
+public class FileUtils {
 
-    private FileOperationUtiles() {
-
-    }
+    private FileUtils() {}
 
     private static string bytesToString(byte[] bytes) {
         if (bytes == null) {
