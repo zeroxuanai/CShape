@@ -149,7 +149,9 @@ public class FileOperationUtiles {
             byte[] buffer = new byte[4096];
             int bytesRead = 0;
             while ((bytesRead = bufferedInput.Read(buffer, 0, buffer.Length)) > 0) {
-                string str = bytesToString(buffer);
+                byte[] dest = new byte[bytesRead];
+                Array.Copy(buffer, 0, dest, 0, bytesRead);
+                string str = bytesToString(dest);
                 stringBuilder.Append(str);
             }
         }
@@ -165,9 +167,7 @@ public class FileOperationUtiles {
             if (bufferedInput != null) {
                 bufferedInput.Dispose();
             }
-
         }
-
 
         return stringBuilder.ToString();
 
@@ -199,12 +199,9 @@ public class FileOperationUtiles {
             }
 
             Debug.Log("文件保存路径：" + filePath);
-            if (!File.Exists(filePath)) {
-                Debug.LogError("指定的文件不存在");
-                return false;
+            if (File.Exists(filePath)) {
+                File.Delete(filePath);
             }
-            File.Delete(filePath);
-
             fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);
             bufferedOutput = new BufferedStream(fs);
             //use BufferedStream write
